@@ -13,5 +13,6 @@ public class VehicleDto {
     private UserBasicDetails user;
     private VehicleBrand brand;
     private String model;
+    private String vehicleNumber;
     private int year;
 }

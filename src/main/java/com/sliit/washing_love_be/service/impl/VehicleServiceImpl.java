@@ -52,7 +52,8 @@ public class VehicleServiceImpl implements VehicleService {
                     .model(vehicleDto.getModel())
                     .brand(vehicleDto.getBrand())
                     .year(vehicleDto.getYear())
-                    .user(vehicle.getUser()).build());
+                    .user(vehicle.getUser())
+                    .vehicleNumber(vehicleDto.getVehicleNumber()).build());
             return modelMapper.map(update, VehicleDto.class);
 
         } catch (Exception e) {
