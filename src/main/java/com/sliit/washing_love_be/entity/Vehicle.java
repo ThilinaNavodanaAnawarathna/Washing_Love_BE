@@ -25,6 +25,8 @@ public class Vehicle {
     private VehicleBrand brand;
     @Column(name = "model", nullable = false, length = 100)
     private String model;
+    @Column(name = "vehicleNumber", unique = true, nullable = false, length = 100)
+    private String vehicleNumber;
     @Column(name = "year", nullable = false)
     private int year;
 }
