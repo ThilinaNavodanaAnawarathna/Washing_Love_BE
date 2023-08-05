@@ -14,4 +14,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select * from booking where booking_status=:status and booking_date=:date and :startTime BETWEEN start_time AND end_time", nativeQuery = true)
     List<Booking> searchBookingByTimeAndDate(String status, String date, Time startTime);
     List<Booking> findAllByUser(User user);
+
+    @Query(value = "select * from booking where booking_status=:status and vehicle_id=:vehicleId and booking_date=:date and :startTime BETWEEN start_time AND end_time", nativeQuery = true)
+    List<Booking> searchBookingByTimeAndDateAndVehicle(String status, String date, Time startTime,Long vehicleId);
 }
