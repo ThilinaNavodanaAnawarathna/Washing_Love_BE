@@ -79,6 +79,23 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public BookingDto checkBookingByTimeAndVehicleId(Date date, Time startTime, Long vehicleId) throws Exception {
+        try {
+            List<Booking> booking = bookingRepository.searchBookingByTimeAndDateAndVehicle(
+                    BookingStatus.PENDING.name()
+                    , format.format(date)
+                    , startTime
+                    , vehicleId);
+            if (booking == null || booking.isEmpty() || booking.get(0) == null)
+                throw new RuntimeException("Can't find matching booking");
+            return modelMapper.map(booking.get(0), BookingDto.class);
+        } catch (Exception e) {
+            log.error("BookingServiceImpl : Can't find booking | Error : {}", e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
     public BookingDto updateBookingStatus(Long bookingId, BookingStatus bookingStatus) throws Exception {
         try {
             Optional<Booking> booking = bookingRepository.findById(bookingId);
@@ -104,6 +121,19 @@ public class BookingServiceImpl implements BookingService {
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("BookingServiceImpl : Can't find All Booking By UserId | Error : {}", e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Booking findBookingById(Long bookingId) throws Exception {
+        try {
+            Optional<Booking> byId = bookingRepository.findById(bookingId);
+            if (!byId.isPresent())
+                throw new Exception("Can't find matching booking details");
+            return byId.get();
+        } catch (Exception e) {
+            log.error("BookingServiceImpl : Can't find All Booking By Id | Error : {}", e.getMessage());
             throw new Exception(e.getMessage());
         }
     }

@@ -9,6 +9,7 @@ public interface VehicleService {
     VehicleDto update(VehicleDto vehicleDto)throws Exception;
     boolean delete(Long vehicleId)throws Exception;
     VehicleDto findById(Long vehicleId)throws Exception;
+    VehicleDto findByVehicleNumber(String vehicleNumber)throws Exception;
     List<VehicleDto> findByUserId(Long userId)throws Exception;
 
 }

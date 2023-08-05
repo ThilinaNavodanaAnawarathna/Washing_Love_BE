@@ -90,6 +90,19 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public VehicleDto findByVehicleNumber(String vehicleNumber) throws Exception {
+        try {
+            Optional<Vehicle> byId = vehicleRepository.findByVehicleNumber(vehicleNumber);
+            if (!byId.isPresent())
+                throw new Exception("Can't find vehicle details");
+            return modelMapper.map(byId.get(), VehicleDto.class);
+        } catch (Exception e) {
+            log.error("VehicleServiceImpl : Can't find vehicle | Error : {}", e.getMessage());
+            throw new Exception("Can't find vehicle details");
+        }
+    }
+
+    @Override
     public List<VehicleDto> findByUserId(Long userId) throws Exception {
         try {
             Optional<User> user = userRepository.findById(userId);
