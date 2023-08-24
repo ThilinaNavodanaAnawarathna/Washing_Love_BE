@@ -33,6 +33,14 @@ public class ReportController {
         return new ResponseEntity<>("Delete success", HttpStatus.OK);
     }
 
+    @GetMapping("user")
+    public ResponseEntity<?> findByUserId(@RequestParam Long userId) throws Exception {
+        List<ReportDto> reportDtos = reportService.findByUserId(userId);
+        if (reportDtos == null)
+            return new ResponseEntity<>("Can't find report", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(reportDtos, HttpStatus.OK);
+    }
+
     @GetMapping("report")
     public ResponseEntity<?> findByBookingId(@RequestParam Long bookingId) throws Exception {
         ReportDto reportDto = reportService.findByBookingId(bookingId);

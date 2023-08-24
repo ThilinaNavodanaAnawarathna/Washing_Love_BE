@@ -20,4 +20,6 @@ public class Report {
     private Booking booking;
     @Column(name = "url", nullable = false, length = 100)
     private String url;
+    @ManyToOne
+    private User user;
 }

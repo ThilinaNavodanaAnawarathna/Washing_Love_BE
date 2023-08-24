@@ -30,7 +30,7 @@ public class WebClientConfiguration {
 
     @Bean
     public WebClient webClientDamageDetectService() {
-        return WebClient.create("localhost:8081//wl/v1/damage")
+        return WebClient.create("http://localhost:8080")
                 .mutate().exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
                                 .maxInMemorySize(16 * 1024 * 1024)).build())

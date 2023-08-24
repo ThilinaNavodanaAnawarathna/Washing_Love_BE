@@ -139,6 +139,20 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public boolean deleteBooking(Long bookingId) throws Exception {
+        try {
+            Optional<Booking> byId = bookingRepository.findById(bookingId);
+            if (!byId.isPresent())
+                throw new Exception("Can't find matching booking details");
+            bookingRepository.delete(byId.get());
+            return true;
+        } catch (Exception e) {
+            log.error("BookingServiceImpl : Can't delete Booking | Error : {}", e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
     public List<BookingDto> getAllBooking() throws Exception {
         try {
             return bookingRepository.findAll().stream()
@@ -146,6 +160,24 @@ public class BookingServiceImpl implements BookingService {
                     .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("BookingServiceImpl : Can't get All Bookings | Error : {}", e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public BookingDto validateBooking(String vehicleNumber) throws Exception {
+        try {
+            Optional<Vehicle> byVehicleNumber = vehicleRepository.findByVehicleNumber(vehicleNumber);
+            if (!byVehicleNumber.isPresent())
+                throw new Exception("Can't find matching vehicle");
+            LocalTime time = LocalTime.now();
+            BookingDto bookingDto = checkBookingByTimeAndVehicleId(new Date(), Time.valueOf(time), byVehicleNumber.get().getId());
+            if (bookingDto == null)
+                throw new RuntimeException("Can't find matching booking");
+            return bookingDto;
+
+        } catch (Exception e) {
+            log.error("BookingServiceImpl : Can't validate Booking | Error : {}", e.getMessage());
             throw new Exception(e.getMessage());
         }
     }

@@ -29,6 +29,16 @@ public class BookingController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteBooking(@RequestParam Long bookingId) {
+        try {
+            boolean deleteBooking = bookingService.deleteBooking(bookingId);
+            return new ResponseEntity<>(deleteBooking, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/status")
     public ResponseEntity<?> updateBookingStatus(@RequestParam Long bookingId, @RequestParam BookingStatus bookingStatus) {
         try {
@@ -59,7 +69,7 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/availability")
+    @PostMapping("/availability")
     public ResponseEntity<?> checkAvailability(@RequestBody CheckAvailability checkAvailability) {
         try {
             boolean availability = bookingService.checkAvailability(checkAvailability.getDate()

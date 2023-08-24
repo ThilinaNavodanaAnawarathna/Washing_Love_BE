@@ -16,5 +16,7 @@ public interface BookingService {
     BookingDto updateBookingStatus(Long bookingId, BookingStatus bookingStatus)throws Exception;
     List<BookingDto> findAllBookingByUserId(Long userId)throws Exception;
     Booking findBookingById(Long bookingId)throws Exception;
+    boolean deleteBooking(Long bookingId)throws Exception;
     List<BookingDto> getAllBooking()throws Exception;
+    BookingDto validateBooking(String vehicleNumber)throws Exception;
 }

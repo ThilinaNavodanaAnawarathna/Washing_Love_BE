@@ -10,5 +10,6 @@ import lombok.*;
 public class ReportDto {
     private Long id;
     private BookingDto booking;
+    private UserBasicDetails user;
     private String url;
 }

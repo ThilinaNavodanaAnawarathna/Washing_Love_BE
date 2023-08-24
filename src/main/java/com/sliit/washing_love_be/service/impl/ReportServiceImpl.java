@@ -3,8 +3,10 @@ package com.sliit.washing_love_be.service.impl;
 import com.sliit.washing_love_be.dto.ReportDto;
 import com.sliit.washing_love_be.entity.Booking;
 import com.sliit.washing_love_be.entity.Report;
+import com.sliit.washing_love_be.entity.User;
 import com.sliit.washing_love_be.repository.BookingRepository;
 import com.sliit.washing_love_be.repository.ReportRepository;
+import com.sliit.washing_love_be.repository.UserRepository;
 import com.sliit.washing_love_be.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,11 +22,13 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
     private final ModelMapper modelMapper;
     private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
 
-    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper, BookingRepository bookingRepository) {
+    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper, BookingRepository bookingRepository, UserRepository userRepository) {
         this.reportRepository = reportRepository;
         this.modelMapper = modelMapper;
         this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -63,6 +67,24 @@ public class ReportServiceImpl implements ReportService {
             if (!byId.isEmpty())
                 throw new Exception("Can't find report details");
             return modelMapper.map(byId.get(0), ReportDto.class);
+        } catch (Exception e) {
+            log.error("ReportService : Can't find report | Error : {}", e.getMessage());
+            throw new Exception("Can't find report details");
+        }
+    }
+
+    @Override
+    public List<ReportDto> findByUserId(Long userId) throws Exception {
+        try {
+            Optional<User> user = userRepository.findById(userId);
+            if (!user.isPresent())
+                throw new Exception("Can't find user details");
+            List<Report> byId = reportRepository.findByUser(user.get());
+            if (byId == null)
+                throw new Exception("Can't find report details");
+            return byId.stream()
+                    .map(element -> modelMapper.map(element, ReportDto.class))
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ReportService : Can't find report | Error : {}", e.getMessage());
             throw new Exception("Can't find report details");

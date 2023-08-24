@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +40,8 @@ public class NumberPlateServiceClient {
                     .bodyToMono(String.class)
                     .block();
         } else {
-            return numberPlate.getOriginalFilename().split(".")[0];
+            String fileName = StringUtils.cleanPath(numberPlate.getOriginalFilename());
+            return fileName.split("\\.")[0] ;
         }
     }
 }

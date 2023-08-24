@@ -10,6 +10,7 @@ public interface ReportService {
     boolean delete(Long reportId) throws Exception;
 
     ReportDto findByBookingId(Long bookingId) throws Exception;
+    List<ReportDto> findByUserId(Long userId) throws Exception;
 
     List<ReportDto> getAllReports() throws Exception;
 }
