@@ -12,7 +12,7 @@ public class WebClientConfiguration {
 
     @Bean
     public WebClient webClientNumberPlateService() {
-        return WebClient.create("localhost:8081//wl/v1/numberPlate")
+        return WebClient.create("http://localhost:8080")
                 .mutate().exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
                                 .maxInMemorySize(16 * 1024 * 1024)).build())
