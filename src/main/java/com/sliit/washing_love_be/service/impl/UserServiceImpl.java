@@ -1,6 +1,7 @@
 package com.sliit.washing_love_be.service.impl;
 
 import com.sliit.washing_love_be.dto.UserDto;
+import com.sliit.washing_love_be.dto.VehicleDto;
 import com.sliit.washing_love_be.entity.User;
 import com.sliit.washing_love_be.repository.UserRepository;
 import com.sliit.washing_love_be.service.UserService;
@@ -10,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -53,5 +56,27 @@ public class UserServiceImpl implements UserService {
                 .createTime(user.getCreateTime())
                 .role(user.getRole())
                 .build());
+    }
+
+    @Override
+    public Optional<UserDto> findById(Long id) {
+        Optional<User>  byId = userRepository.findById(id);
+
+        return byId.map(user -> UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .createTime(user.getCreateTime())
+                .role(user.getRole())
+                .build());
+    }
+
+    @Override
+    public List<UserDto> getAll() {
+        List<User> all = userRepository.findAll();
+        return all.stream()
+                .map(element -> modelMapper.map(element, UserDto.class))
+                .collect(Collectors.toList());
     }
 }
